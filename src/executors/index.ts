@@ -66,5 +66,5 @@ export class StreamExecutor<T> {
   }
 }
 
-export const createStreamer = <T>(initialValue: T) =>
+export const createStream = <T>(initialValue: T) =>
   new StreamExecutor(initialValue)

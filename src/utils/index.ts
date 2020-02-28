@@ -1,4 +1,4 @@
-import { createStreamer } from '../executors'
+import { createStream } from '../executors'
 
 /**
  * Convert A to B, like `map` in RxJS
@@ -62,10 +62,10 @@ export const filter = <T>(predicate: (data: T) => boolean) => (data: T) => {
  *      ..
  *    )
  */
-export const which = <T, U>(
+export const which = <T, U, V>(
   predicate: (data: T) => boolean,
   right: (data: T) => U,
-  left: (data: T) => U
+  left: (data: T) => V
 ) => (data: T) => {
   const result = predicate(data) ? right(data) : left(data)
   return result
@@ -95,6 +95,46 @@ export const ifRight = <T, U>(
   }
   return data
 }
+
+/**
+ * filter if true :`typeof data === type`
+ * @param type
+ * @example
+ *  createStream(1)
+ *    .sequential(
+ *      ifRight(
+ *        num => num > 2,
+ *        map(num => num.toString())
+ *      ),
+ *      asType<string>('string'),
+ *      ..
+ *    )
+ */
+export const asType = <T>(
+  type:
+    | 'string'
+    | 'number'
+    | 'boolean'
+    | 'object'
+    | 'function'
+    | 'symbol'
+    | 'undefined'
+    | 'bigint'
+) => <U>(data: U) => ((typeof data === type ? data : undefined) as unknown) as T
+
+/**
+ * stop further processing
+ * @example
+ *  createStream(1)
+ *    .sequential(
+ *      ifRight(
+ *        num => num > 2,
+ *        stop()
+ *      ),
+ *      ..
+ *    )
+ */
+export const stop = () => <T>(_: T) => (undefined as unknown) as T
 
 const _logging = <T>(data: T) => console.log(data)
 export const logging = tap(_logging)
