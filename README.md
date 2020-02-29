@@ -1,6 +1,21 @@
 # stream-executor
 - This library is inspired by [RxJS](https://github.com/ReactiveX/rxjs)
 
+# Important
+- createStream().chain():
+  - further process is not called if `undefined` returned
+  - return value is last value before `undefined` returned
+  ```ts
+  const result = createStream(1)
+    .chain(
+      tap((it) => console.log(it)), // 1
+      filter((it) => it > 2),
+      map((it) => it + 9)
+    )
+    .execute()
+  console.log(result) // 1, not 10
+  ``` 
+
 # Sample
 ```ts
 import { createStream } from 'stream-executor'
