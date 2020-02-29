@@ -3,7 +3,7 @@
  * @param mapper (data: T) => U
  * @example
  *  createStream(1)
- *    .sequential(
+ *    .chain(
  *      map(num => num + 1),
  *      ..
  *    )
@@ -18,7 +18,7 @@ export const map = <T, U>(mapper: (data: T) => U) => (data: T) => {
  * @param tapper (data: T) => void
  * @example
  *  createStream(1)
- *    .sequential(
+ *    .chain(
  *      tap(num => console.log(tap)),
  *      ..
  *    )
@@ -33,7 +33,7 @@ export const tap = <T>(tapper: (data: T) => void) => (data: T) => {
  * @param predicate (data: T) => boolean
  * @example
  *  createStream(1)
- *    .sequential(
+ *    .chain(
  *      filter(num => num > 2),
  *      ..
  *    )
@@ -51,7 +51,7 @@ export const filter = <T>(predicate: (data: T) => boolean) => (data: T) => {
  * @example
  *  let isSucceded: boolean
  *  createStream(1)
- *    .sequential(
+ *    .chain(
  *      which(
  *        num => num > 2,
  *        tap(_ => { isSucceded = true }),
@@ -76,7 +76,7 @@ export const which = <T, U, V>(
  * @example
  *  let isSucceded: boolean
  *  createStream(1)
- *    .sequential(
+ *    .chain(
  *      ifRight(
  *        num => num > 2,
  *        tap(num => console.log(num))
@@ -86,8 +86,8 @@ export const which = <T, U, V>(
  */
 export const ifRight = <T, U>(
   predicate: (data: T) => boolean,
-  right: (data: T) => U
-) => (data: T): T | U => {
+  right: (data: T) => any
+) => (data: T) => {
   if (predicate(data)) {
     right(data)
   }
@@ -99,16 +99,13 @@ export const ifRight = <T, U>(
  * @param type
  * @example
  *  createStream(1)
- *    .sequential(
- *      ifRight(
- *        num => num > 2,
- *        map(num => num.toString())
- *      ),
- *      asType<string>('string'),
+ *    .chain(
+ *      map(it => it as string | number),
+ *      asTypeOf<number>('number'),
  *      ..
  *    )
  */
-export const asType = <T>(
+export const asTypeOf = <T>(
   type:
     | 'string'
     | 'number'
@@ -121,10 +118,32 @@ export const asType = <T>(
 ) => <U>(data: U) => ((typeof data === type ? data : undefined) as unknown) as T
 
 /**
+ * filter if true :`data instanceof instance`
+ * @param type
+ * @example
+ *  class Wrapper {
+ *    value: number
+ *    constructor(value: number) {
+ *      this.value = value
+ *    }
+ *  }
+ *
+ *  createStream(new Wrapper(1)})
+ *    .chain(
+ *      map(it => ({ ...it, value: 100 })),
+ *      asInstanceOf(Wrapper)
+ *      ..
+ *    )
+ */
+export const asInstanceOf = <T>(instance: { new (...args: any[]): T }) => <U>(
+  data: U
+) => ((data instanceof instance ? data : undefined) as unknown) as T
+
+/**
  * stop further processing
  * @example
  *  createStream(1)
- *    .sequential(
+ *    .chain(
  *      ifRight(
  *        num => num > 2,
  *        stop()

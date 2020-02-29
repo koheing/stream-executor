@@ -38,7 +38,7 @@ export class ChainExecutor<T> implements BaseExecutor {
   }
 
   execute(onError?: (error: any) => any) {
-    let result: any
+    let result = this._initialValue
     try {
       this._actions.reduce((pre, curr) => {
         if (typeof pre === 'undefined') {
