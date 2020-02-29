@@ -3,7 +3,7 @@
 - This library is inspired by [RxJS](https://github.com/ReactiveX/rxjs)
 
 # Important
-1. about createStream
+1. about `createStream`
   - Input value, 1st argument, is deep copyed. Set the second argument to false if you do not want to do deep copy.
   ```ts
   import { createStream } from 'stream-executor'
@@ -20,7 +20,7 @@
   console.log(input) // { value: 10 }
   console.log(result2) // { value: 10 }
   ```
-2. about createStream().chain():
+2. about `createStream().chain()`:
   - further process is not called if `undefined` returned
   - return value is last value before `undefined` returned
   ```ts
