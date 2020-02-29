@@ -1,9 +1,25 @@
 # stream-executor
+- functional stream programming library
 - This library is inspired by [RxJS](https://github.com/ReactiveX/rxjs)
 
 # Important
 1. about createStream
   - Input value, 1st argument, is deep copyed. Set the second argument to false if you do not want to do deep copy.
+  ```ts
+  import { createStream } from 'stream-executor'
+  const input = { value: 1 }
+  const result = createStream(input)
+    .chain(tap((it) => (it.value += 9)))
+
+  console.log(input) // { value: 1 }
+  console.log(result) // { value: 10 }
+
+  const result2 = createStream(input, false)
+    .chain(tap((it) => (it.value += 9)))
+
+  console.log(input) // { value: 10 }
+  console.log(result2) // { value: 10 }
+  ```
 2. about createStream().chain():
   - further process is not called if `undefined` returned
   - return value is last value before `undefined` returned
@@ -61,7 +77,7 @@ import { createStream } from 'stream-executor'
 let isSucceeded = false
 
 const chainResult = createStream(1)
-  .chain( // like RxJS. `it` is calculated value before current procecss
+  .chain(
     map((it) => it + 10),
     map((it) => it < 10 ? it.toString() : it),
     asTypeOf<number>('number'),
