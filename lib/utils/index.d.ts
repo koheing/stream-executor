@@ -8,11 +8,7 @@
  *      ..
  *    )
  */
-export const map = <T, U>(mapper: (data: T) => U) => (data: T) => {
-  const mapped = mapper(data)
-  return mapped
-}
-
+export declare const map: <T, U>(mapper: (data: T) => U) => (data: T) => U;
 /**
  * like `tap` in RxJS
  * @param tapper (data: T) => void
@@ -23,11 +19,7 @@ export const map = <T, U>(mapper: (data: T) => U) => (data: T) => {
  *      ..
  *    )
  */
-export const tap = <T>(tapper: (data: T) => void) => (data: T) => {
-  tapper(data)
-  return data
-}
-
+export declare const tap: <T>(tapper: (data: T) => void) => (data: T) => T;
 /**
  * like `filter` in RxJS
  * @param predicate (data: T) => boolean
@@ -38,11 +30,7 @@ export const tap = <T>(tapper: (data: T) => void) => (data: T) => {
  *      ..
  *    )
  */
-export const filter = <T>(predicate: (data: T) => boolean) => (data: T) => {
-  const result = (predicate(data) ? data : undefined) as T
-  return result
-}
-
+export declare const filter: <T>(predicate: (data: T) => boolean) => (data: T) => T;
 /**
  * if `predicate` is true,`right` called, otherwise `left` called
  * @param predicate (data: T) => boolean
@@ -60,15 +48,7 @@ export const filter = <T>(predicate: (data: T) => boolean) => (data: T) => {
  *      ..
  *    )
  */
-export const which = <T, U, V>(
-  predicate: (data: T) => boolean,
-  right: (data: T) => U,
-  left: (data: T) => V
-) => (data: T) => {
-  const result = predicate(data) ? right(data) : left(data)
-  return result
-}
-
+export declare const which: <T, U, V>(predicate: (data: T) => boolean, right: (data: T) => U, left: (data: T) => V) => (data: T) => U | V;
 /**
  * if `predicate` is true,`right` called
  * @param predicate (data: T) => boolean
@@ -84,16 +64,7 @@ export const which = <T, U, V>(
  *      ..
  *    )
  */
-export const ifRight = <T, U>(
-  predicate: (data: T) => boolean,
-  right: (data: T) => any
-) => (data: T) => {
-  if (predicate(data)) {
-    right(data)
-  }
-  return data
-}
-
+export declare const ifRight: <T, U>(predicate: (data: T) => boolean, right: (data: T) => any) => (data: T) => T;
 /**
  * filter if true :`typeof data === type`
  * @param type
@@ -105,18 +76,7 @@ export const ifRight = <T, U>(
  *      ..
  *    )
  */
-export const asTypeOf = <T>(
-  type:
-    | 'string'
-    | 'number'
-    | 'boolean'
-    | 'object'
-    | 'function'
-    | 'symbol'
-    | 'undefined'
-    | 'bigint'
-) => <U>(data: U) => ((typeof data === type ? data : undefined) as unknown) as T
-
+export declare const asTypeOf: <T>(type: "string" | "number" | "bigint" | "boolean" | "symbol" | "undefined" | "object" | "function") => <U>(data: U) => T;
 /**
  * filter if true :`data instanceof instance`
  * @param type
@@ -135,10 +95,7 @@ export const asTypeOf = <T>(
  *      ..
  *    )
  */
-export const asInstanceOf = <T>(instance: { new (...args: any[]): T }) => <U>(
-  data: U
-) => ((data instanceof instance ? data : undefined) as unknown) as T
-
+export declare const asInstanceOf: <T>(instance: new (...args: any[]) => T) => <U>(data: U) => T;
 /**
  * stop further processing
  * @example
@@ -152,4 +109,4 @@ export const asInstanceOf = <T>(instance: { new (...args: any[]): T }) => <U>(
  *      ..
  *    )
  */
-export const stop = () => <T>(_: T) => (undefined as unknown) as T
+export declare const stop: () => <T>(_: T) => T;
