@@ -4,7 +4,7 @@
 
 # Important
 ## 1. about `createStream`
-  - Input value, 1st argument, is deep copyed. Set the second argument to false if you do not want to do deep copy.
+  - The first argument of the input value is deep copied. Set the second argument to false if you don't want deep copy. 
   ```ts
   import { createStream, tap } from 'stream-executor'
   const input = { value: 1 }
