@@ -6,7 +6,7 @@
 1. about `createStream`
   - Input value, 1st argument, is deep copyed. Set the second argument to false if you do not want to do deep copy.
   ```ts
-  import { createStream } from 'stream-executor'
+  import { createStream, tap } from 'stream-executor'
   const input = { value: 1 }
   const result = createStream(input)
     .chain(tap((it) => (it.value += 9)))
@@ -24,6 +24,7 @@
   - further process is not called if `undefined` returned
   - return value is last value before `undefined` returned
   ```ts
+  import { createStream, tap, filter, map } from 'stream-executor'
   const result = createStream(1)
     .chain(
       tap((it) => console.log(it)), // 1
@@ -73,7 +74,7 @@ console.log(result) // 11
 
 ###  using stream-executor 
 ```ts
-import { createStream } from 'stream-executor'
+import { createStream, map, asTypeOf, which, filter, tap } from 'stream-executor'
 let isSucceeded = false
 
 const chainResult = createStream(1)
