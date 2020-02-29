@@ -1,10 +1,9 @@
 import { BaseExecutor } from './__interfaces__'
 import { Action } from '../types'
 
-export class SequentialExecutor<T> implements BaseExecutor {
+export class ChainExecutor<T> implements BaseExecutor {
   private _initialValue: T
   private _actions: Action<any, any>[] = []
-  private _result: any
 
   constructor(initialValue: T) {
     this._initialValue = initialValue
@@ -39,13 +38,17 @@ export class SequentialExecutor<T> implements BaseExecutor {
   }
 
   execute(onError?: (error: any) => any) {
+    let result: any
     try {
       this._actions.reduce((pre, curr) => {
         if (typeof pre === 'undefined') {
           return
         }
-        this._result = curr(pre)
-        return this._result
+        const _result = curr(pre)
+        if (typeof _result !== 'undefined') {
+          result = _result
+        }
+        return _result
       }, this._initialValue)
     } catch (e) {
       if (onError) {
@@ -55,6 +58,6 @@ export class SequentialExecutor<T> implements BaseExecutor {
       }
     }
 
-    return this._result
+    return result
   }
 }

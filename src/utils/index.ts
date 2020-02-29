@@ -1,5 +1,3 @@
-import { createStream } from '../executors'
-
 /**
  * Convert A to B, like `map` in RxJS
  * @param mapper (data: T) => U
