@@ -122,7 +122,7 @@ import { createStream } from 'stream-executor'
 let currentCount = 0
 let isLoading = false
 
-const parallelResult = createStream(1)
+const setCount = (value: number) => createStream(1)
   .parallel(
     (it) => (isLoading = true),
     (it) => (currentCount = it),
@@ -130,6 +130,7 @@ const parallelResult = createStream(1)
   )
   .execute()
 
+setCount(1)
 console.log(currentCount) // 1
 console.log(isLoading)    // false
 ```
