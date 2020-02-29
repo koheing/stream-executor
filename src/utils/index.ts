@@ -152,6 +152,3 @@ export const asInstanceOf = <T>(instance: { new (...args: any[]): T }) => <U>(
  *    )
  */
 export const stop = () => <T>(_: T) => (undefined as unknown) as T
-
-const _logging = <T>(data: T) => console.log(data)
-export const logging = tap(_logging)
