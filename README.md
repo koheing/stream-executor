@@ -7,8 +7,8 @@ import { createStream } from 'stream-executor'
 
 let isSucceeded = true
 
-const chainResult = createStream(1)  // like RxJS
-  .chain(
+const chainResult = createStream(1)
+  .chain( // like RxJS. `it` is calculated value before current procecss
     map((it) => it + 10),
     map((it) => it < 10 ? it.toString() : it),
     asType<number>('number'),
