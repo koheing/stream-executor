@@ -8,7 +8,7 @@ import {
   asTypeOf,
   asInstanceOf,
   stop
-} from '../../src'
+} from '../../../src'
 
 describe('map', () => {
   it('can map', () => {
@@ -165,8 +165,8 @@ describe('asTypeOf', () => {
 describe('asInstanceOf', () => {
   class Wrapper {
     value: number
-    constructor() {
-      this.value = 1
+    constructor(value: number) {
+      this.value = value
     }
   }
   afterEach(() => {
@@ -187,8 +187,9 @@ describe('asInstanceOf', () => {
 
   it('through further process', () => {
     const spyConsole = jest.spyOn(console, 'log')
-    createStream(new Wrapper())
+    createStream(1)
       .chain(
+        map((it) => new Wrapper(it)),
         asInstanceOf(Wrapper),
         tap((it) => console.log(it.value))
       )

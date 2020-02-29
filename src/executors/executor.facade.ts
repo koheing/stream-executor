@@ -1,13 +1,13 @@
 import { Action } from '../types'
 import { ChainExecutor } from './chain.executor'
 import { ParallelExecutor } from './parallel.executor'
-import { BaseExecutor } from './__interfaces__'
+import { deepCopy } from '../utils'
 
 export class StreamExecutorFacade<T> {
   private _initialValue: T
 
-  constructor(initialValue: T) {
-    this._initialValue = initialValue
+  constructor(initialValue: T, doDeepCopy: boolean) {
+    this._initialValue = doDeepCopy ? deepCopy(initialValue) : initialValue
   }
 
   chain<A, B, C, D, E, F, G, H, I, J>(
@@ -35,7 +35,7 @@ export class StreamExecutorFacade<T> {
       act10
     )
 
-    return executor as BaseExecutor
+    return executor as Omit<typeof executor, 'stream'>
   }
 
   parallel<A, B, C, D, E, F, G, H, I, J>(
@@ -63,9 +63,14 @@ export class StreamExecutorFacade<T> {
       act10
     )
 
-    return executor as BaseExecutor
+    return executor as Omit<typeof executor, 'stream'>
   }
 }
 
-export const createStream = <T>(initialValue: T) =>
-  new StreamExecutorFacade(initialValue)
+/**
+ * create streamer
+ * @param initialValue T
+ * @param doDeepCopy default `true`. don't deepCody if `false`.
+ */
+export const createStream = <T>(initialValue: T, doDeepCopy = true) =>
+  new StreamExecutorFacade(initialValue, doDeepCopy)
