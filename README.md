@@ -111,7 +111,7 @@ const setCount = (value: number) => {
   isLoading = false
 }
 
-setCount(value)
+setCount(1)
 console.log(currentCount) // 1
 console.log(isLoading)    // false
 ```
