@@ -1,7 +1,7 @@
 /**
  * @param object any
  */
-export function deepCopy<T>(object: T): T {
+export const deepCopy = <T>(object: T): T => {
   if (typeof object !== 'object') {
     return object
   }
