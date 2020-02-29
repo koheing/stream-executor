@@ -40,6 +40,7 @@ const parallelResult = createStream(1)
       isLoading = false
     }
   )
+  .execute()
 
 console.log(currentCount) // 1
 console.log(isLoading)    // false
