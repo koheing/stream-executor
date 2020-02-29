@@ -7,12 +7,7 @@ export const deepCopy = <T>(object: T): T => {
   }
 
   if (object instanceof Array) {
-    const newObject: Array<any> = []
-    object.forEach((it) => {
-      const _object = deepCopy(it)
-      newObject.push(_object)
-    })
-    return (newObject as unknown) as T
+    return (object.map((it) => deepCopy(it)) as unknown) as T
   }
 
   const newObject: { [key: string]: any } = { ...object }
