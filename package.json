@@ -1,7 +1,7 @@
 {
   "name": "stream-executor",
   "version": "0.1.0",
-  "description": "stream execute",
+  "description": "functional stream programming",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "directories": {
@@ -16,7 +16,8 @@
     "preversion": "npm run lint"
   },
   "keywords": [
-    "typescript"
+    "typescript",
+    "functional"
   ],
   "author": "nor-ko-hi-jp",
   "license": "MIT",

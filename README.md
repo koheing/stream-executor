@@ -18,11 +18,47 @@
   console.log(result) // 1, not 10
   ``` 
 
-# Sample
+# Usage
+
+## 1. chain stream
+
+### Not using stream-executor 
+```ts
+let isSucceeded = false
+
+const value = 1
+const value2 = 1 + 10
+let value3: string | number
+if (value2 < 10) {
+  value3 = value3.toString()
+} else {
+  value3 = value2
+}
+
+if (typeof value3 !== 'number') {
+  return
+}
+
+if (value3 > 0) {
+  isSucceeded = true
+} else {
+  return
+}
+
+if (value3 <= 10) {
+  return
+}
+const result = value3
+
+console.log('end')
+console.log(isSucceeded) // true
+console.log(result) // 11
+```
+
+###  using stream-executor 
 ```ts
 import { createStream } from 'stream-executor'
-
-let isSucceeded = true
+let isSucceeded = false
 
 const chainResult = createStream(1)
   .chain( // like RxJS. `it` is calculated value before current procecss
@@ -41,21 +77,39 @@ const chainResult = createStream(1)
   )
   .execute()
 
+console.log(isSucceeded) // true
 console.log(chainResult) // 11
+```
 
+## 2. parallel stream
+
+### not using stream-executor 
+```ts
 let currentCount = 0
 let isLoading = false
+
+const setCount = (value: number) => {
+  isLoading = true
+  currentCount = value
+  isLoading = false
+}
+
+setCount(value)
+console.log(currentCount) // 1
+console.log(isLoading)    // false
+```
+
+###  using stream-executor 
+```ts
+import { createStream } from 'stream-executor'
+let currentCount = 0
+let isLoading = false
+
 const parallelResult = createStream(1)
-  .parallel( // `it` is always 1
-    (it) => {
-      isLoading = true
-    },
-    (it) => {
-      currentCount = it
-    },
-    (it) => {
-      isLoading = false
-    }
+  .parallel(
+    (it) => (isLoading = true),
+    (it) => (currentCount = it),
+    (it) => (isLoading = false)
   )
   .execute()
 
