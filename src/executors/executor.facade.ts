@@ -1,17 +1,19 @@
-import { Action } from '../types'
+import { Action, WithoutGetterAndFunction } from '../types'
 import { ChainExecutor } from './chain.executor'
 import { ParallelExecutor } from './parallel.executor'
 import { deepCopy } from '../utils'
 
 export class StreamExecutorFacade<T> {
-  private _initialValue: T
+  private _initialValue: WithoutGetterAndFunction<T>
 
   constructor(initialValue: T, doDeepCopy: boolean) {
-    this._initialValue = doDeepCopy ? deepCopy(initialValue) : initialValue
+    this._initialValue = doDeepCopy
+      ? deepCopy(initialValue)
+      : (initialValue as WithoutGetterAndFunction<T>)
   }
 
   chain<A, B, C, D, E, F, G, H, I, J>(
-    act1: Action<T, A>,
+    act1: Action<WithoutGetterAndFunction<T>, A>,
     act2?: Action<A, B>,
     act3?: Action<B, C>,
     act4?: Action<C, D>,
@@ -39,16 +41,16 @@ export class StreamExecutorFacade<T> {
   }
 
   parallel<A, B, C, D, E, F, G, H, I, J>(
-    act1: Action<T, A>,
-    act2?: Action<T, B>,
-    act3?: Action<T, C>,
-    act4?: Action<T, D>,
-    act5?: Action<T, E>,
-    act6?: Action<T, F>,
-    act7?: Action<T, G>,
-    act8?: Action<T, H>,
-    act9?: Action<T, I>,
-    act10?: Action<T, J>
+    act1: Action<WithoutGetterAndFunction<T>, A>,
+    act2?: Action<WithoutGetterAndFunction<T>, B>,
+    act3?: Action<WithoutGetterAndFunction<T>, C>,
+    act4?: Action<WithoutGetterAndFunction<T>, D>,
+    act5?: Action<WithoutGetterAndFunction<T>, E>,
+    act6?: Action<WithoutGetterAndFunction<T>, F>,
+    act7?: Action<WithoutGetterAndFunction<T>, G>,
+    act8?: Action<WithoutGetterAndFunction<T>, H>,
+    act9?: Action<WithoutGetterAndFunction<T>, I>,
+    act10?: Action<WithoutGetterAndFunction<T>, J>
   ) {
     const executor = new ParallelExecutor(this._initialValue).stream(
       act1,

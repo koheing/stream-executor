@@ -20,6 +20,24 @@
   console.log(input) // { value: 10 }
   console.log(result2) // { value: 10 }
   ```
+  - getter and function in object are deleted if the second argument is `true` or `nothing`.
+  ```ts
+  import { createStream, tap } from 'stream-executor'
+  class Wrapper<T> {
+    value: T
+    constructor(value: T) {
+      this.value = value
+    }
+    hello() {
+      console.log('world')
+    }
+  }
+  const input = new Wrapper(1)
+  const result = createStream(input)
+    .chain(tap((it) => (it.value += 9)))
+
+  console.log(result) // { value: 10 }. 'hello' prop is removed
+  ``` 
 ## 2. about `createStream().chain()`:
   - further process is not called if `undefined` returned
   - return value is last value before `undefined` returned
