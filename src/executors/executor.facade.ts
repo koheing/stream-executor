@@ -67,7 +67,8 @@ export class StreamExecutorFacade<T> {
 }
 
 /**
- * create streamer, initialValue is deep copied
+ * create streamer, initialValue is shallow copied.
+ * Use `deepCopy` in this library if you'd like to do deep copy
  * @param initialValue T
  */
 export const createStream = <T>(initialValue: T) =>

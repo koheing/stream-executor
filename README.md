@@ -141,7 +141,7 @@ console.log(isLoading)    // false
   const result = createStream(deepCopy(input))
     .chain(tap((it) => (it.value += 9)))
 
-  console.log(input)  // Wrapper { value: 1, doubledValue: 2, __proto__: { hello: () => console.log('world') } }
+  console.log(input)  // Wrapper{ value: 1, doubledValue: 2, __proto__: { hello: () => console.log('world') } }
   console.log(result) // { value: 10, __proto__: {} }
   ``` 
 ## 2. about `createStream().chain()`:
@@ -158,3 +158,14 @@ console.log(isLoading)    // false
     .execute()
   console.log(result) // 1, not 10
   ``` 
+
+# Utils
+## helper methods in createStream are
+  ### 1. [map](./src/executors/helpers/index.ts#L1)
+  ### 2. [tap](./src/executors/helpers/index.ts#L16)
+  ### 3. [filter](./src/executors/helpers/index.ts#L31)
+  ### 4. [which](./src/executors/helpers/index.ts#L46)
+  ### 5. [ifRight](./src/executors/helpers/index.ts#L72)
+  ### 6. [asTypeOf](./src/executors/helpers/index.ts#L97)
+  ### 7. [asInstanceOf](./src/executors/helpers/index.ts#L120)
+  ### 8. [stop](./src/executors/helpers/index.ts#L142)

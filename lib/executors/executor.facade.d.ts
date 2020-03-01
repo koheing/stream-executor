@@ -8,7 +8,8 @@ export declare class StreamExecutorFacade<T> {
     parallel<A, B, C, D, E, F, G, H, I, J>(act1: Action<T, A>, act2?: Action<T, B>, act3?: Action<T, C>, act4?: Action<T, D>, act5?: Action<T, E>, act6?: Action<T, F>, act7?: Action<T, G>, act8?: Action<T, H>, act9?: Action<T, I>, act10?: Action<T, J>): Pick<ParallelExecutor<T>, "execute">;
 }
 /**
- * create streamer, initialValue is deep copied
+ * create streamer, initialValue is shallow copied.
+ * Use `deepCopy` in this library if you'd like to do deep copy
  * @param initialValue T
  */
 export declare const createStream: <T>(initialValue: T) => StreamExecutorFacade<T>;
