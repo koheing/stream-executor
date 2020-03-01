@@ -160,7 +160,7 @@ console.log(isLoading)    // false
   ``` 
 
 # Utils
-## helper methods in createStream are
+## helper methods and there descriptions in createStream are
   ### 1. [map](./src/executors/helpers/index.ts#L1)
   ### 2. [tap](./src/executors/helpers/index.ts#L16)
   ### 3. [filter](./src/executors/helpers/index.ts#L31)
