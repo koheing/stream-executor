@@ -34,7 +34,7 @@ console.log(result)      // 10
 
 ###  using stream-executor 
 ```ts
-import { createStream, map, asTypeOf, which, filter, tap } from 'stream-executor'
+import { createStream, map, which, filter, tap } from 'stream-executor'
 let isSucceeded = false
 
 const chainResult = createStream(1)
