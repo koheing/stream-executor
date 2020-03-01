@@ -1,6 +1,7 @@
-import { createStream, tap, StreamExecutorFacade } from '../../src/executors'
+import { createStream, tap } from '../../src/executors'
 import { ChainExecutor } from '../../src/executors/chain.executor'
 import { ParallelExecutor } from '../../src/executors/parallel.executor'
+import { deepCopy } from '../../src/utils'
 
 describe('StreamExecutorFacade', () => {
   afterEach(() => {
@@ -28,7 +29,7 @@ describe('StreamExecutorFacade', () => {
 
   it('do deepCopy', () => {
     const input = { value: 1, fruitNames: ['pine', 'apple'] }
-    const executor = createStream(input).chain(
+    const executor = createStream(deepCopy(input)).chain(
       tap((it) => {
         it.value += 9
         it.fruitNames.push('orange')
@@ -45,7 +46,7 @@ describe('StreamExecutorFacade', () => {
 
   it('do not deepCopy', () => {
     const input = { value: 1, fruitNames: ['pine', 'apple'] }
-    const executor = createStream(input, false).chain(
+    const executor = createStream(input).chain(
       tap((it) => {
         it.value += 9
         it.fruitNames.push('orange')

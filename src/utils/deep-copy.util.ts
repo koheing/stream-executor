@@ -1,17 +1,17 @@
-import { WithoutGetterAndFunction } from '../types'
+import { OmitGetterAndFunction } from '../types'
 
 /**
  * @param object any
  */
-export const deepCopy = <T>(object: T): WithoutGetterAndFunction<T> => {
+export const deepCopy = <T>(object: T): OmitGetterAndFunction<T> => {
   if (typeof object !== 'object') {
-    return object as WithoutGetterAndFunction<T>
+    return object as OmitGetterAndFunction<T>
   }
 
   if (object instanceof Array) {
     return (object.map((it) =>
       deepCopy(it)
-    ) as unknown) as WithoutGetterAndFunction<T>
+    ) as unknown) as OmitGetterAndFunction<T>
   }
 
   const newObject: { [key: string]: any } = { ...object }
@@ -28,5 +28,5 @@ export const deepCopy = <T>(object: T): WithoutGetterAndFunction<T> => {
       const _object = deepCopy(value)
       newObject[key] = _object
     })
-  return (newObject as unknown) as WithoutGetterAndFunction<T>
+  return (newObject as unknown) as OmitGetterAndFunction<T>
 }

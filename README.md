@@ -4,39 +4,45 @@
 
 # Important
 ## 1. about `createStream`
-  - The first argument of the input value is deep copied. Set the second argument to false if you don't want deep copy, please. 
+  - The argument of createStream is not deep copied. use `deepCopy` method if you'd like to do deep copy.
   ```ts
-  import { createStream, tap } from 'stream-executor'
+  import { createStream, tap, deepCopy } from 'stream-executor'
   const input = { value: 1 }
   const result = createStream(input)
     .chain(tap((it) => (it.value += 9)))
 
-  console.log(input) // { value: 1 }
+  console.log(input) // { value: 10 }
   console.log(result) // { value: 10 }
 
-  const result2 = createStream(input, false)
+  const input2 = { value: 1 }
+  const result2 = createStream(deepCopy(input2))
     .chain(tap((it) => (it.value += 9)))
 
-  console.log(input) // { value: 10 }
+  console.log(input2) // { value: 1 }
   console.log(result2) // { value: 10 }
   ```
-  - getter and function in object are deleted if the second argument is `true` or `nothing`.
+## 2. about `deepCopy`
+  - getter and function in object are deleted.
   ```ts
-  import { createStream, tap } from 'stream-executor'
+  import { createStream, tap, deepCopy } from 'stream-executor'
   class Wrapper<T> {
     value: T
     constructor(value: T) {
       this.value = value
+    }
+    get doubledValue() {
+      return this.value * 2
     }
     hello() {
       console.log('world')
     }
   }
   const input = new Wrapper(1)
-  const result = createStream(input)
+  const result = createStream(deepCopy(input))
     .chain(tap((it) => (it.value += 9)))
 
-  console.log(result) // { value: 10 }. 'hello' prop is removed
+  console.log(input)  // Wrapper { value: 1, doubledValue: 1, __proto__: { hello: () => console.log('world') } }
+  console.log(result) // { value: 10, __proto__: {} }
   ``` 
 ## 2. about `createStream().chain()`:
   - further process is not called if `undefined` returned
