@@ -1,13 +1,12 @@
 import { Action } from '../types'
 import { ChainExecutor } from './chain.executor'
 import { ParallelExecutor } from './parallel.executor'
-import { deepCopy } from '../utils'
 
 export class StreamExecutorFacade<T> {
   private _initialValue: T
 
-  constructor(initialValue: T, doDeepCopy: boolean) {
-    this._initialValue = doDeepCopy ? deepCopy(initialValue) : initialValue
+  constructor(initialValue: T) {
+    this._initialValue = initialValue
   }
 
   chain<A, B, C, D, E, F, G, H, I, J>(
@@ -35,7 +34,7 @@ export class StreamExecutorFacade<T> {
       act10
     )
 
-    return executor as Omit<typeof executor, 'stream'>
+    return executor as Pick<typeof executor, 'execute'>
   }
 
   parallel<A, B, C, D, E, F, G, H, I, J>(
@@ -63,14 +62,14 @@ export class StreamExecutorFacade<T> {
       act10
     )
 
-    return executor as Omit<typeof executor, 'stream'>
+    return executor as Pick<typeof executor, 'execute'>
   }
 }
 
 /**
- * create streamer
+ * create streamer, initialValue is shallow copied.
+ * Use `deepCopy` in this library if you'd like to do deep copy
  * @param initialValue T
- * @param doDeepCopy default `true`. don't deepCody if `false`.
  */
-export const createStream = <T>(initialValue: T, doDeepCopy = true) =>
-  new StreamExecutorFacade(initialValue, doDeepCopy)
+export const createStream = <T>(initialValue: T) =>
+  new StreamExecutorFacade(initialValue)

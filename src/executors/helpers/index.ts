@@ -84,7 +84,7 @@ export const which = <T, U, V>(
  *      ..
  *    )
  */
-export const ifRight = <T, U>(
+export const ifRight = <T>(
   predicate: (data: T) => boolean,
   right: (data: T) => any
 ) => (data: T) => {

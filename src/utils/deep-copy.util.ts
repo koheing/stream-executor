@@ -1,18 +1,16 @@
+import { OmitFunction } from '../types'
+
 /**
+ * This method do deep copy property, excluded `Function` and `getter`
  * @param object any
  */
-export const deepCopy = <T>(object: T): T => {
+export const deepCopy = <T>(object: T): OmitFunction<T> => {
   if (typeof object !== 'object') {
-    return object
+    return object as OmitFunction<T>
   }
 
   if (object instanceof Array) {
-    const newObject: Array<any> = []
-    object.forEach((it) => {
-      const _object = deepCopy(it)
-      newObject.push(_object)
-    })
-    return (newObject as unknown) as T
+    return (object.map((it) => deepCopy(it)) as unknown) as OmitFunction<T>
   }
 
   const newObject: { [key: string]: any } = { ...object }
@@ -29,5 +27,5 @@ export const deepCopy = <T>(object: T): T => {
       const _object = deepCopy(value)
       newObject[key] = _object
     })
-  return (newObject as unknown) as T
+  return (newObject as unknown) as OmitFunction<T>
 }

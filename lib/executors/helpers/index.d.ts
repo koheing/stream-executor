@@ -64,7 +64,7 @@ export declare const which: <T, U, V>(predicate: (data: T) => boolean, right: (d
  *      ..
  *    )
  */
-export declare const ifRight: <T, U>(predicate: (data: T) => boolean, right: (data: T) => any) => (data: T) => T;
+export declare const ifRight: <T>(predicate: (data: T) => boolean, right: (data: T) => any) => (data: T) => T;
 /**
  * filter if true :`typeof data === type`
  * @param type

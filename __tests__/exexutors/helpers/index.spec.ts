@@ -47,7 +47,7 @@ describe('filter', () => {
         map((_) => 100)
       )
       .execute()
-    expect(result).toEqual(10)
+    expect(result).toEqual(undefined)
     expect(result).not.toEqual(100)
   })
 
