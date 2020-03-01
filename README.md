@@ -141,7 +141,7 @@ console.log(isLoading)    // false
   const result = createStream(deepCopy(input))
     .chain(tap((it) => (it.value += 9)))
 
-  console.log(input)  // Wrapper { value: 1, doubledValue: 1, __proto__: { hello: () => console.log('world') } }
+  console.log(input)  // Wrapper { value: 1, doubledValue: 2, __proto__: { hello: () => console.log('world') } }
   console.log(result) // { value: 10, __proto__: {} }
   ``` 
 ## 2. about `createStream().chain()`:
