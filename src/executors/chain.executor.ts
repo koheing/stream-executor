@@ -45,9 +45,7 @@ export class ChainExecutor<T> implements BaseExecutor {
           return
         }
         const _result = curr(pre)
-        if (typeof _result !== 'undefined') {
-          result = _result
-        }
+        result = _result
         return _result
       }, this._initialValue)
     } catch (e) {

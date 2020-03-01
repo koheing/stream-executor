@@ -37,7 +37,7 @@ describe('ChainExecutor', () => {
       )
       .execute()
 
-    expect(result).toEqual({ value: 11 })
+    expect(result).toEqual(undefined)
   })
 
   it('chain execute: failured, default errorHandling', () => {

@@ -134,7 +134,6 @@ console.log(isLoading)    // false
   ``` 
 ## 2. about `createStream().chain()`:
   - further process is not called if `undefined` returned
-  - return value is last value before `undefined` returned
   ```ts
   import { createStream, tap, filter, map } from 'stream-executor'
   const result = createStream(1)
@@ -144,7 +143,7 @@ console.log(isLoading)    // false
       map((it) => it + 9)
     )
     .execute()
-  console.log(result) // 1, not 10
+  console.log(result) // undefined
   ``` 
 
 # Utils
