@@ -10,33 +10,26 @@
 ```ts
 let isSucceeded = false
 
-const value = 1
-const value2 = 1 + 10
-let value3: string | number
-if (value2 < 10) {
-  value3 = value3.toString()
-} else {
-  value3 = value2
+const initialValue = 1
+let value = 0
+
+if (value >= 0) {
+  value = initialValue * 10
 }
 
-if (typeof value3 !== 'number') {
-  return
-}
-
-if (value3 > 0) {
+if (value > 1) {
   isSucceeded = true
 } else {
-  return
+  console.log('not succeeded')
 }
 
-if (value3 <= 10) {
+if (value < 10) {
   return
 }
-const result = value3
+const result = value
 
-console.log('end')
 console.log(isSucceeded) // true
-console.log(result) // 11
+console.log(result)      // 10
 ```
 
 ###  using stream-executor 
@@ -46,23 +39,18 @@ let isSucceeded = false
 
 const chainResult = createStream(1)
   .chain(
-    map((it) => it + 10),
-    map((it) => it < 10 ? it.toString() : it),
-    asTypeOf<number>('number'),
+    map((it) => it * 10),
     which(
-      (it) => it > 0,
-      tap((it) => {
-        isSucceeded = true
-      }),
-      stop()
+      (it) => it > 1,
+      tap((it) => (isSucceeded = true)),
+      tap((it) => console.log('not succeeded'))
     ),
-    filter((it) => it > 10),
-    tap((it) => console.log('end'))
+    filter((it) => it >= 10)
   )
   .execute()
 
 console.log(isSucceeded) // true
-console.log(chainResult) // 11
+console.log(chainResult) // 10
 ```
 
 ## 2. parallel stream
