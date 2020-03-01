@@ -34,7 +34,7 @@ export class StreamExecutorFacade<T> {
       act10
     )
 
-    return executor as Omit<typeof executor, 'stream'>
+    return executor as Pick<typeof executor, 'execute'>
   }
 
   parallel<A, B, C, D, E, F, G, H, I, J>(
@@ -62,7 +62,7 @@ export class StreamExecutorFacade<T> {
       act10
     )
 
-    return executor as Omit<typeof executor, 'stream'>
+    return executor as Pick<typeof executor, 'execute'>
   }
 }
 
