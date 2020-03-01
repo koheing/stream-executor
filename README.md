@@ -104,7 +104,7 @@ console.log(isLoading)    // false
 
 # Important
 ## 1. about `createStream`
-  - The argument of createStream is not deep copied. use `deepCopy` method if you'd like to do deep copy.
+  - The argument of createStream is not deep copied. use `deepCopy` method if you'd like to do deep copy, please.
   ```ts
   import { createStream, tap, deepCopy } from 'stream-executor'
   const input = { value: 1 }
@@ -122,7 +122,7 @@ console.log(isLoading)    // false
   console.log(result2) // { value: 10 }
   ```
 ## 2. about `deepCopy`
-  - getter and function in object are deleted.
+  - getter and function in object are removed.
   ```ts
   import { createStream, tap, deepCopy } from 'stream-executor'
   class Wrapper<T> {
