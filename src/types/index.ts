@@ -1,10 +1,10 @@
-type PickByType<T, V> = {
+type PickKeysByType<T, V> = {
   [K in keyof T]: T[K] extends V ? K : never
 }[keyof T]
 
 type ArrayOr<T, U> = T extends Array<any> ? T : U
 type OrMapObject<T, U> = T extends { [key: string]: any } ? U : T
-type PickFunction<T> = PickByType<T, Function>
+type PickFunction<T> = PickKeysByType<T, Function>
 
 export type OmitFunction<T> = ArrayOr<
   T,

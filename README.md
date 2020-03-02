@@ -57,7 +57,10 @@ console.log(chainResult) // 10
 
 ### not using stream-executor 
 ```ts
+let isLoading: boolean
 const mammal = { no: 999, name: 'UNKNOWN', type: 'bird' }
+
+isLoading = true
 
 if (mammal.no < 100) {
   console.log('under 100!')
@@ -74,6 +77,8 @@ if (mammal.type == 'bird' && mammal.name !== 'UNKNOWN') {
   registerDB(mammal)
 }
 
+isLoading = false
+console.log(isLoading)    // false
 console.log('end')
 ```
 
@@ -82,9 +87,11 @@ console.log('end')
 import { createStream, ifRight, which } from 'stream-executor'
 
 const mammal = { no: 999, name: 'UNKNOWN', type: 'bird' }
+let isLoading: boolean
 
 createStream(mammal)
   .parallel(
+    (_) => (isLoading = true),
     ifRight(({ no }) => no < 100, (_) => console.log('under 100!')),
     which(({ type }) => type === 'bird',
       (it) => calculateSize(it),
@@ -94,11 +101,11 @@ createStream(mammal)
       console.log('maybe new species')
       registerDB(mammal)
     }),
+    (_) => (isLoading = false),
     (_) => console.log('end')
   )
   .execute()
 
-console.log(currentCount) // 1
 console.log(isLoading)    // false
 ```
 
