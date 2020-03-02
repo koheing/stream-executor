@@ -88,20 +88,27 @@ console.log(isLoading)    // false
 import { createStream, ifRight, which } from 'stream-executor'
 
 const mammal = { no: 999, name: 'UNKNOWN', type: 'bird' }
-let isLoading: boolean
+let isLoading = true
 
 createStream(mammal)
   .batch(
     (_) => (isLoading = true),
-    ifRight(({ no }) => no < 100, (_) => console.log('under 100!')),
-    which(({ type }) => type === 'bird',
+    ifRight(
+      ({ no }) => no < 100,
+      (_) => console.log('under 100!')
+    ),
+    which(
+      ({ type }) => type === 'bird',
       (it) => calculateSize(it),
       (_) => console.log('Not Bird')
     ),
-    ifRight(({ type, name }) => type === 'bird' && name === 'UNKNOWN', (_) => {
-      console.log('maybe new species')
-      registerDB(mammal)
-    }),
+    ifRight(
+      ({ type, name }) => type === 'bird' && name === 'UNKNOWN',
+      (_) => {
+        console.log('maybe new species')
+        registerDB(mammal)
+      }
+    ),
     (_) => (isLoading = false),
     (_) => console.log('end')
   )
