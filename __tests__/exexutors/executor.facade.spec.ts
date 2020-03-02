@@ -1,6 +1,6 @@
 import { createStream, tap } from '../../src/executors'
 import { ChainExecutor } from '../../src/executors/chain.executor'
-import { ParallelExecutor } from '../../src/executors/parallel.executor'
+import { BatchExecutor } from '../../src/executors/batch.executor'
 import { deepCopy } from '../../src/utils'
 
 describe('StreamExecutorFacade', () => {
@@ -18,13 +18,13 @@ describe('StreamExecutorFacade', () => {
 
   it('ParallelExecutor called', () => {
     let num = 0
-    const executor = createStream(1).parallel((it) => {
+    const executor = createStream(1).batch((it) => {
       num = it
     })
     executor.execute()
 
     expect(num).toEqual(1)
-    expect(executor).toBeInstanceOf(ParallelExecutor)
+    expect(executor).toBeInstanceOf(BatchExecutor)
   })
 
   it('do deepCopy', () => {

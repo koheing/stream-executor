@@ -53,7 +53,7 @@ console.log(isSucceeded) // true
 console.log(chainResult) // 10
 ```
 
-## 2. parallel stream (like `when` in Kotlin)
+## 2. batch stream (like `when` in Kotlin)
 
 ### not using stream-executor 
 ```ts
@@ -90,7 +90,7 @@ const mammal = { no: 999, name: 'UNKNOWN', type: 'bird' }
 let isLoading: boolean
 
 createStream(mammal)
-  .parallel(
+  .batch(
     (_) => (isLoading = true),
     ifRight(({ no }) => no < 100, (_) => console.log('under 100!')),
     which(({ type }) => type === 'bird',
@@ -151,7 +151,7 @@ console.log(isLoading)    // false
   console.log(input)  // Wrapper{ value: 1, doubledValue: 2, __proto__: { hello: () => console.log('world') } }
   console.log(result) // { value: 10, __proto__: {} }
   ``` 
-## 2. about `createStream().chain()`:
+## 3. about `createStream().chain()`:
   - further process is not called if `undefined` returned
   ```ts
   import { createStream, tap, filter, map } from 'stream-executor'
@@ -164,6 +164,21 @@ console.log(isLoading)    // false
     .execute()
   console.log(result) // undefined
   ``` 
+
+## 4. abount the arguments of execute()
+  - set the arguments of execute method if you'd like to customize error handling, please
+  ```ts
+  let error: any
+  createStream(1)
+    .batch(
+      (it) => console.log(it),
+      ..
+    )
+    .execute((err: any) => {
+      console.error(error)
+      error = err
+    })
+  ```
 
 # Utils
 ## helper methods and those descriptions in createStream are

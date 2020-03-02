@@ -1,4 +1,4 @@
-import { ParallelExecutor } from '../../src/executors/parallel.executor'
+import { BatchExecutor } from '../../src/executors/batch.executor'
 
 describe('ParallelExecutor', () => {
   afterEach(() => {
@@ -6,7 +6,7 @@ describe('ParallelExecutor', () => {
   })
 
   it('parallel execute: succeeded', () => {
-    const parallel = new ParallelExecutor('apple')
+    const parallel = new BatchExecutor('apple')
     let favoriteFruit = ''
     const fruitNames: string[] = []
     parallel
@@ -27,7 +27,7 @@ describe('ParallelExecutor', () => {
 
   it('parallel execute: failured, default errorHandling', () => {
     const spyConsole = jest.spyOn(console, 'error')
-    const parallel = new ParallelExecutor('apple')
+    const parallel = new BatchExecutor('apple')
     let favoriteFruit = ''
     const fruitNames: string[] = []
     parallel
@@ -49,7 +49,7 @@ describe('ParallelExecutor', () => {
   })
 
   it('parallel execute: failured, custom errorHandling', () => {
-    const parallel = new ParallelExecutor('apple')
+    const parallel = new BatchExecutor('apple')
     let favoriteFruit = ''
     const fruitNames: string[] = []
     const mockOnError = jest.fn()

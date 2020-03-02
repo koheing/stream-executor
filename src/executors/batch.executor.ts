@@ -1,7 +1,7 @@
 import { BaseExecutor } from './__interfaces__'
 import { Action } from '../types'
 
-export class ParallelExecutor<T> implements BaseExecutor {
+export class BatchExecutor<T> implements BaseExecutor {
   private _initialValue: T
   private _actions: Action<T, any>[] = []
   constructor(initialValue: T) {
