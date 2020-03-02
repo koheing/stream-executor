@@ -4,7 +4,7 @@
 
 # Usage
 
-## 1. chain stream
+## 1. chain stream (like RxJS)
 
 ### Not using stream-executor 
 ```ts
@@ -32,7 +32,7 @@ console.log(isSucceeded) // true
 console.log(result)      // 10
 ```
 
-###  using stream-executor 
+###  using stream-executor
 ```ts
 import { createStream, map, which, filter, tap } from 'stream-executor'
 let isSucceeded = false
@@ -53,40 +53,56 @@ console.log(isSucceeded) // true
 console.log(chainResult) // 10
 ```
 
-## 2. parallel stream
+## 2. batch stream (like `when` in Kotlin)
 
 ### not using stream-executor 
 ```ts
-let currentCount = 0
-let isLoading = false
+let isLoading: boolean
+const mammal = { no: 999, name: 'UNKNOWN', type: 'bird' }
 
-const setCount = (value: number) => {
-  isLoading = true
-  currentCount = value
-  isLoading = false
+isLoading = true
+
+if (mammal.type === 'bird') {
+  calculateSize(mammal)
+} else {
+  console.log('Not Bird')
 }
 
-setCount(1)
-console.log(currentCount) // 1
+if (mammal.type == 'bird' && mammal.name !== 'UNKNOWN') {
+  console.log('maybe new species')
+  registerDB(mammal)
+}
+
+isLoading = false
+
+console.log('end')
 console.log(isLoading)    // false
 ```
 
 ###  using stream-executor 
 ```ts
-import { createStream } from 'stream-executor'
-let currentCount = 0
-let isLoading = false
+import { createStream, ifRight, which } from 'stream-executor'
 
-const setCount = (value: number) => createStream(value)
-  .parallel(
-    (it) => (isLoading = true),
-    (it) => (currentCount = it),
-    (it) => (isLoading = false)
+const mammal = { no: 999, name: 'UNKNOWN', type: 'bird' }
+let isLoading = true
+
+createStream(mammal)
+  .batch(
+    (_) => (isLoading = true),
+    which(
+      ({ type }) => type === 'bird',
+      (it) => calculateSize(it),
+      (_) => console.log('Not Bird')
+    ),
+    ifRight(
+      ({ type, name }) => type === 'bird' && name === 'UNKNOWN',
+      (_) => registerDB(mammal)
+    ),
+    (_) => (isLoading = false),
+    (_) => console.log('end')
   )
   .execute()
 
-setCount(1)
-console.log(currentCount) // 1
 console.log(isLoading)    // false
 ```
 
@@ -132,19 +148,34 @@ console.log(isLoading)    // false
   console.log(input)  // Wrapper{ value: 1, doubledValue: 2, __proto__: { hello: () => console.log('world') } }
   console.log(result) // { value: 10, __proto__: {} }
   ``` 
-## 2. about `createStream().chain()`:
+## 3. about `createStream().chain()`:
   - further process is not called if `undefined` returned
   ```ts
   import { createStream, tap, filter, map } from 'stream-executor'
   const result = createStream(1)
     .chain(
       tap((it) => console.log(it)), // 1
-      filter((it) => it > 2),
-      map((it) => it + 9)
+      filter((it) => it > 2),       // return undefined
+      map((it) => it + 9)           // not called
     )
     .execute()
   console.log(result) // undefined
   ``` 
+
+## 4. abount the arguments of execute()
+  - set the arguments of execute method if you'd like to customize error handling, please
+  ```ts
+  let error: any
+  createStream(1)
+    .batch(
+      (it) => console.log(it),
+      ..
+    )
+    .execute((err: any) => {
+      console.error(error)
+      error = err
+    })
+  ```
 
 # Utils
 ## helper methods and those descriptions in createStream are

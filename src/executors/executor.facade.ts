@@ -1,6 +1,6 @@
 import { Action } from '../types'
 import { ChainExecutor } from './chain.executor'
-import { ParallelExecutor } from './parallel.executor'
+import { BatchExecutor } from './batch.executor'
 
 export class StreamExecutorFacade<T> {
   private _initialValue: T
@@ -37,7 +37,7 @@ export class StreamExecutorFacade<T> {
     return executor as Pick<typeof executor, 'execute'>
   }
 
-  parallel<A, B, C, D, E, F, G, H, I, J>(
+  batch<A, B, C, D, E, F, G, H, I, J>(
     act1: Action<T, A>,
     act2?: Action<T, B>,
     act3?: Action<T, C>,
@@ -49,7 +49,7 @@ export class StreamExecutorFacade<T> {
     act9?: Action<T, I>,
     act10?: Action<T, J>
   ) {
-    const executor = new ParallelExecutor(this._initialValue).stream(
+    const executor = new BatchExecutor(this._initialValue).stream(
       act1,
       act2,
       act3,
