@@ -62,10 +62,6 @@ const mammal = { no: 999, name: 'UNKNOWN', type: 'bird' }
 
 isLoading = true
 
-if (mammal.no < 100) {
-  console.log('under 100!')
-}
-
 if (mammal.type === 'bird') {
   calculateSize(mammal)
 } else {
@@ -93,10 +89,6 @@ let isLoading = true
 createStream(mammal)
   .batch(
     (_) => (isLoading = true),
-    ifRight(
-      ({ no }) => no < 100,
-      (_) => console.log('under 100!')
-    ),
     which(
       ({ type }) => type === 'bird',
       (it) => calculateSize(it),
@@ -104,10 +96,7 @@ createStream(mammal)
     ),
     ifRight(
       ({ type, name }) => type === 'bird' && name === 'UNKNOWN',
-      (_) => {
-        console.log('maybe new species')
-        registerDB(mammal)
-      }
+      (_) => registerDB(mammal)
     ),
     (_) => (isLoading = false),
     (_) => console.log('end')
