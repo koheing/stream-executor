@@ -78,8 +78,9 @@ if (mammal.type == 'bird' && mammal.name !== 'UNKNOWN') {
 }
 
 isLoading = false
-console.log(isLoading)    // false
+
 console.log('end')
+console.log(isLoading)    // false
 ```
 
 ###  using stream-executor 
