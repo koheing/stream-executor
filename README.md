@@ -4,7 +4,7 @@
 
 # Usage
 
-## 1. chain stream
+## 1. chain stream (like RxJS)
 
 ### Not using stream-executor 
 ```ts
@@ -32,7 +32,7 @@ console.log(isSucceeded) // true
 console.log(result)      // 10
 ```
 
-###  using stream-executor 
+###  using stream-executor
 ```ts
 import { createStream, map, which, filter, tap } from 'stream-executor'
 let isSucceeded = false
@@ -53,39 +53,51 @@ console.log(isSucceeded) // true
 console.log(chainResult) // 10
 ```
 
-## 2. parallel stream
+## 2. parallel stream (like `when` in Kotlin)
 
 ### not using stream-executor 
 ```ts
-let currentCount = 0
-let isLoading = false
+const mammal = { no: 999, name: 'UNKNOWN', type: 'bird' }
 
-const setCount = (value: number) => {
-  isLoading = true
-  currentCount = value
-  isLoading = false
+if (mammal.no < 100) {
+  console.log('under 100!')
 }
 
-setCount(1)
-console.log(currentCount) // 1
-console.log(isLoading)    // false
+if (mammal.type === 'bird') {
+  calculateSize(mammal)
+} else {
+  console.log('Not Bird')
+}
+
+if (mammal.type == 'bird' && mammal.name !== 'UNKNOWN') {
+  console.log('maybe new species')
+  registerDB(mammal)
+}
+
+console.log('end')
 ```
 
 ###  using stream-executor 
 ```ts
-import { createStream } from 'stream-executor'
-let currentCount = 0
-let isLoading = false
+import { createStream, ifRight, which } from 'stream-executor'
 
-const setCount = (value: number) => createStream(value)
+const mammal = { no: 999, name: 'UNKNOWN', type: 'bird' }
+
+createStream(mammal)
   .parallel(
-    (it) => (isLoading = true),
-    (it) => (currentCount = it),
-    (it) => (isLoading = false)
+    ifRight(({ no }) => no < 100, (_) => console.log('under 100!')),
+    which(({ type }) => type === 'bird',
+      (it) => calculateSize(it),
+      (_) => console.log('Not Bird')
+    ),
+    ifRight(({ type, name }) => type === 'bird' && name === 'UNKNOWN', (_) => {
+      console.log('maybe new species')
+      registerDB(mammal)
+    }),
+    (_) => console.log('end')
   )
   .execute()
 
-setCount(1)
 console.log(currentCount) // 1
 console.log(isLoading)    // false
 ```
@@ -139,8 +151,8 @@ console.log(isLoading)    // false
   const result = createStream(1)
     .chain(
       tap((it) => console.log(it)), // 1
-      filter((it) => it > 2),
-      map((it) => it + 9)
+      filter((it) => it > 2),       // return undefined
+      map((it) => it + 9)           // not called
     )
     .execute()
   console.log(result) // undefined
