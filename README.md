@@ -53,7 +53,7 @@ console.log(isSucceeded) // true
 console.log(chainResult) // 10
 ```
 
-## 2. batch stream (like `when` in Kotlin)
+## 2. batch stream
 
 ### not using stream-executor 
 ```ts
