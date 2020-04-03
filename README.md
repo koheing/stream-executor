@@ -1,6 +1,9 @@
 # stream-executor
 - functional stream programming library
 - This library is inspired by [RxJS](https://github.com/ReactiveX/rxjs)
+- This library is effective for
+  - managing and reusing processes in actions in fine-grained
+  - the processing in the action becomes complicated
 
 # Usage
 
