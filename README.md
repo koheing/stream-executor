@@ -5,6 +5,10 @@
   - managing and reusing processes in actions in fine-grained
   - the processing in the action becomes complicated
 
+```
+npm i stream-executor
+```
+
 # Usage
 
 ## 1. chain stream (like RxJS)
