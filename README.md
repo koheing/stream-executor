@@ -56,7 +56,7 @@ console.log(isSucceeded) // true
 console.log(chainResult) // 10
 ```
 
-## 2. batch stream
+## 2. batch stream (like switch without break)
 
 ### not using stream-executor 
 ```ts
@@ -99,7 +99,7 @@ createStream(mammal)
     ),
     ifRight(
       ({ type, name }) => type === 'bird' && name === 'UNKNOWN',
-      (_) => registerDB(mammal)
+      (mammal) => registerDB(mammal)
     ),
     (_) => (isLoading = false),
     (_) => console.log('end')
