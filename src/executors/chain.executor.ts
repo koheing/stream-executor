@@ -31,7 +31,7 @@ export class ChainExecutor<T> implements BaseExecutor {
       act7,
       act8,
       act9,
-      act10
+      act10,
     ].filter((act) => typeof act !== 'undefined') as Action<any, any>[]
     this._actions = _actions
     return this

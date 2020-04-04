@@ -15,6 +15,10 @@
     "prepublishOnly": "npm test && npm run lint",
     "preversion": "npm run lint"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nor-ko-hi-jp/stream-executor.git"
+  },
   "keywords": [
     "typescript",
     "functional"
