@@ -1,4 +1,7 @@
 # stream-executor
+[![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/nor-ko-hi-jp/stream-executor/issues)
+
 - functional stream programming library
 - This library is inspired by [RxJS](https://github.com/ReactiveX/rxjs)
 - This library is effective for
