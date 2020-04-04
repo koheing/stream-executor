@@ -190,11 +190,11 @@ console.log(isLoading)    // false
 
 # Utils
 ## helper methods and those descriptions in createStream are
-  ### 1. [map](./src/executors/helpers/index.ts#L1)
-  ### 2. [tap](./src/executors/helpers/index.ts#L16)
-  ### 3. [filter](./src/executors/helpers/index.ts#L31)
-  ### 4. [which](./src/executors/helpers/index.ts#L46)
-  ### 5. [ifRight](./src/executors/helpers/index.ts#L72)
-  ### 6. [asTypeOf](./src/executors/helpers/index.ts#L97)
-  ### 7. [asInstanceOf](./src/executors/helpers/index.ts#L120)
-  ### 8. [stop](./src/executors/helpers/index.ts#L142)
+1. [map](./src/executors/helpers/index.ts#L1)
+2. [tap](./src/executors/helpers/index.ts#L16)
+3. [filter](./src/executors/helpers/index.ts#L31)
+4. [which](./src/executors/helpers/index.ts#L46)
+5. [ifRight](./src/executors/helpers/index.ts#L72)
+6. [asTypeOf](./src/executors/helpers/index.ts#L97)
+7. [asInstanceOf](./src/executors/helpers/index.ts#L120)
+8. [stop](./src/executors/helpers/index.ts#L142)
