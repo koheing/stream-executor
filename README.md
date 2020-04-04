@@ -1,6 +1,17 @@
 # stream-executor
+[![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
+![Main](https://github.com/nor-ko-hi-jp/stream-executor/workflows/Main/badge.svg)
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/nor-ko-hi-jp/stream-executor/issues)
+
 - functional stream programming library
 - This library is inspired by [RxJS](https://github.com/ReactiveX/rxjs)
+- This library is effective for
+  - managing and reusing processes in actions in fine-grained
+  - the processing in the action becomes complicated
+
+```
+npm i stream-executor
+```
 
 # Usage
 
@@ -53,7 +64,7 @@ console.log(isSucceeded) // true
 console.log(chainResult) // 10
 ```
 
-## 2. batch stream
+## 2. batch stream (like switch without break)
 
 ### not using stream-executor 
 ```ts
@@ -96,7 +107,7 @@ createStream(mammal)
     ),
     ifRight(
       ({ type, name }) => type === 'bird' && name === 'UNKNOWN',
-      (_) => registerDB(mammal)
+      (mammal) => registerDB(mammal)
     ),
     (_) => (isLoading = false),
     (_) => console.log('end')
@@ -179,11 +190,11 @@ console.log(isLoading)    // false
 
 # Utils
 ## helper methods and those descriptions in createStream are
-  ### 1. [map](./src/executors/helpers/index.ts#L1)
-  ### 2. [tap](./src/executors/helpers/index.ts#L16)
-  ### 3. [filter](./src/executors/helpers/index.ts#L31)
-  ### 4. [which](./src/executors/helpers/index.ts#L46)
-  ### 5. [ifRight](./src/executors/helpers/index.ts#L72)
-  ### 6. [asTypeOf](./src/executors/helpers/index.ts#L97)
-  ### 7. [asInstanceOf](./src/executors/helpers/index.ts#L120)
-  ### 8. [stop](./src/executors/helpers/index.ts#L142)
+1. [map](./src/executors/helpers/index.ts#L1)
+2. [tap](./src/executors/helpers/index.ts#L16)
+3. [filter](./src/executors/helpers/index.ts#L31)
+4. [which](./src/executors/helpers/index.ts#L46)
+5. [ifRight](./src/executors/helpers/index.ts#L72)
+6. [asTypeOf](./src/executors/helpers/index.ts#L97)
+7. [asInstanceOf](./src/executors/helpers/index.ts#L120)
+8. [stop](./src/executors/helpers/index.ts#L142)

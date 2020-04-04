@@ -13,9 +13,9 @@ export const deepCopy = <T>(object: T): OmitFunction<T> => {
     return (object.map((it) => deepCopy(it)) as unknown) as OmitFunction<T>
   }
 
-  const newObject: { [key: string]: any } = { ...object }
+  const newObject: Record<string, any> = { ...object }
   Object.keys(object)
-    .filter((key) => typeof (object as any)[key] === 'object')
+    .filter((key) => typeof (object as Record<string, any>)[key] === 'object')
     .forEach((key) => {
       const value = (object as any)[key]
       if (value instanceof Array) {

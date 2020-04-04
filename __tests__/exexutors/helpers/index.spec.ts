@@ -7,7 +7,7 @@ import {
   ifRight,
   asTypeOf,
   asInstanceOf,
-  stop
+  stop,
 } from '../../../src'
 
 describe('map', () => {
@@ -106,7 +106,7 @@ describe('ifRight', () => {
       .chain(
         ifRight(
           (it) => it > 0,
-          tap((it) => console.log(it))
+          (it) => console.log(it)
         )
       )
       .execute()

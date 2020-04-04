@@ -52,7 +52,7 @@ export declare const which: <T, U, V>(predicate: (data: T) => boolean, right: (d
 /**
  * if `predicate` is true,`right` called
  * @param predicate (data: T) => boolean
- * @param right (data: T) => U
+ * @param right (data: T) => void
  * @example
  *  let isSucceded: boolean
  *  createStream(1)
@@ -64,7 +64,7 @@ export declare const which: <T, U, V>(predicate: (data: T) => boolean, right: (d
  *      ..
  *    )
  */
-export declare const ifRight: <T>(predicate: (data: T) => boolean, right: (data: T) => any) => (data: T) => T;
+export declare const ifRight: <T>(predicate: (data: T) => boolean, right: (data: T) => void) => (data: T) => T;
 /**
  * filter if true :`typeof data === type`
  * @param type
