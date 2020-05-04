@@ -1,4 +1,4 @@
-import { Action } from '../types'
+import { Action, PromiseOr } from '../types'
 import { ChainExecutor } from './chain.executor'
 import { BatchExecutor } from './batch.executor'
 
@@ -22,19 +22,19 @@ export class StreamExecutorFacade<T> {
     act10?: Action<I, J>
   ) {
     const executor = new ChainExecutor(this._initialValue).stream(
-      act1,
-      act2,
-      act3,
-      act4,
-      act5,
-      act6,
-      act7,
-      act8,
-      act9,
-      act10
+      act1 as Action<PromiseOr<any>, PromiseOr<any>>,
+      act2 as Action<PromiseOr<any>, PromiseOr<any>>,
+      act3 as Action<PromiseOr<any>, PromiseOr<any>>,
+      act4 as Action<PromiseOr<any>, PromiseOr<any>>,
+      act5 as Action<PromiseOr<any>, PromiseOr<any>>,
+      act6 as Action<PromiseOr<any>, PromiseOr<any>>,
+      act7 as Action<PromiseOr<any>, PromiseOr<any>>,
+      act8 as Action<PromiseOr<any>, PromiseOr<any>>,
+      act9 as Action<PromiseOr<any>, PromiseOr<any>>,
+      act10 as Action<PromiseOr<any>, PromiseOr<any>>
     )
 
-    return executor as Pick<typeof executor, 'execute'>
+    return executor as Omit<typeof executor, 'stream'>
   }
 
   batch<A, B, C, D, E, F, G, H, I, J>(
