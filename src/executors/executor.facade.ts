@@ -9,6 +9,22 @@ export class StreamExecutorFacade<T> {
     this._initialValue = initialValue
   }
 
+  /**
+   * sequential execute.
+   * call `asAsync` method after chain method if you use async/await in chain.
+   * @see https://github.com/nor-ko-hi-jp/stream-executor/blob/master/README.md#4-use-asynchronous-execution-in-createstreamchain
+   * @see https://github.com/nor-ko-hi-jp/stream-executor/blob/master/README.md#using-stream-executor
+   * @param act1 (value: T) => U
+   * @param act2 (value: T) => U
+   * @param act3 (value: T) => U
+   * @param act4 (value: T) => U
+   * @param act5 (value: T) => U
+   * @param act6 (value: T) => U
+   * @param act7 (value: T) => U
+   * @param act8 (value: T) => U
+   * @param act9 (value: T) => U
+   * @param act10 (value: T) => U
+   */
   chain<A, B, C, D, E, F, G, H, I, J>(
     act1: Action<T, A>,
     act2?: Action<A, B>,
@@ -37,6 +53,20 @@ export class StreamExecutorFacade<T> {
     return executor as Omit<typeof executor, 'stream'>
   }
 
+  /**
+   * batch execute, like `when` in Kotlin.
+   * @see https://github.com/nor-ko-hi-jp/stream-executor/blob/master/README.md#using-stream-executor-1
+   * @param act1 (value: T) => U
+   * @param act2 (value: T) => U
+   * @param act3 (value: T) => U
+   * @param act4 (value: T) => U
+   * @param act5 (value: T) => U
+   * @param act6 (value: T) => U
+   * @param act7 (value: T) => U
+   * @param act8 (value: T) => U
+   * @param act9 (value: T) => U
+   * @param act10 (value: T) => U
+   */
   batch<A, B, C, D, E, F, G, H, I, J>(
     act1: Action<T, A>,
     act2?: Action<T, B>,
