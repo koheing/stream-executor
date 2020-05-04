@@ -8,6 +8,7 @@
 - This library is effective for
   - managing and reusing processes in actions in fine-grained
   - the processing in the action becomes complicated
+  - asynchronous execution sequentially 
 
 ```
 npm i stream-executor
@@ -16,6 +17,26 @@ npm i stream-executor
 # Usage
 
 ## 1. chain stream (like RxJS)
+###  using stream-executor
+```ts
+import { createStream, map, which, filter, tap } from 'stream-executor'
+let isSucceeded = false
+
+const chainResult = createStream(1)
+  .chain(
+    map((it) => it * 10),
+    which(
+      (it) => it > 1,
+      tap((it) => (isSucceeded = true)),
+      tap((it) => console.log('not succeeded'))
+    ),
+    filter((it) => it >= 10)
+  )
+  .execute()
+
+console.log(isSucceeded) // true
+console.log(chainResult) // 10
+```
 
 ### Not using stream-executor 
 ```ts
@@ -43,52 +64,8 @@ console.log(isSucceeded) // true
 console.log(result)      // 10
 ```
 
-###  using stream-executor
-```ts
-import { createStream, map, which, filter, tap } from 'stream-executor'
-let isSucceeded = false
-
-const chainResult = createStream(1)
-  .chain(
-    map((it) => it * 10),
-    which(
-      (it) => it > 1,
-      tap((it) => (isSucceeded = true)),
-      tap((it) => console.log('not succeeded'))
-    ),
-    filter((it) => it >= 10)
-  )
-  .execute()
-
-console.log(isSucceeded) // true
-console.log(chainResult) // 10
-```
 
 ## 2. batch stream (like switch without break)
-
-### not using stream-executor 
-```ts
-let isLoading: boolean
-const mammal = { no: 999, name: 'UNKNOWN', type: 'bird' }
-
-isLoading = true
-
-if (mammal.type === 'bird') {
-  calculateSize(mammal)
-} else {
-  console.log('Not Bird')
-}
-
-if (mammal.type == 'bird' && mammal.name !== 'UNKNOWN') {
-  console.log('maybe new species')
-  registerDB(mammal)
-}
-
-isLoading = false
-
-console.log('end')
-console.log(isLoading)    // false
-```
 
 ###  using stream-executor 
 ```ts
@@ -116,6 +93,31 @@ createStream(mammal)
 
 console.log(isLoading)    // false
 ```
+
+### not using stream-executor 
+```ts
+let isLoading: boolean
+const mammal = { no: 999, name: 'UNKNOWN', type: 'bird' }
+
+isLoading = true
+
+if (mammal.type === 'bird') {
+  calculateSize(mammal)
+} else {
+  console.log('Not Bird')
+}
+
+if (mammal.type == 'bird' && mammal.name !== 'UNKNOWN') {
+  console.log('maybe new species')
+  registerDB(mammal)
+}
+
+isLoading = false
+
+console.log('end')
+console.log(isLoading)    // false
+```
+
 
 # Important
 ## 1. about `createStream`
@@ -173,7 +175,22 @@ console.log(isLoading)    // false
   console.log(result) // undefined
   ``` 
 
-## 4. abount the arguments of execute()
+## 4. use asynchronous execution in `createStream().chain()`:
+  - call `asAsync` method before `execute` method
+  ```ts
+  import { createStream, tap, map } from 'stream-executor'
+  const result = await createStream(1)
+    .chain(
+      tap((it) => console.log(it)),             // 1
+      map(async (it) => await callAPI(it)),    
+      map(async (it) => parseToModel(await it)) // Record<string, any>
+    )
+    .asAsync()
+    .execute()
+  console.log(result) // Record<string, any>
+  ``` 
+
+## 5. abount the arguments of execute()
   - set the arguments of execute method if you'd like to customize error handling, please
   ```ts
   let error: any
