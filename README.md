@@ -120,7 +120,7 @@ console.log(isLoading)    // false
 
 
 # Important
-## 1. about `createStream`
+## 1. About `createStream`
   - The argument of createStream is not deep copied. use `deepCopy` method if you'd like to do deep copy, please.
   ```ts
   import { createStream, tap, deepCopy } from 'stream-executor'
@@ -138,7 +138,7 @@ console.log(isLoading)    // false
   console.log(input2) // { value: 1 }
   console.log(result2) // { value: 10 }
   ```
-## 2. about `deepCopy`
+## 2. About `deepCopy`
   - getter and function in object are removed.
   ```ts
   import { createStream, tap, deepCopy } from 'stream-executor'
@@ -161,7 +161,7 @@ console.log(isLoading)    // false
   console.log(input)  // Wrapper{ value: 1, doubledValue: 2, __proto__: { hello: () => console.log('world') } }
   console.log(result) // { value: 10, __proto__: {} }
   ``` 
-## 3. about `createStream().chain()`:
+## 3. About `createStream().chain()`:
   - further process is not called if `undefined` returned
   ```ts
   import { createStream, tap, filter, map } from 'stream-executor'
@@ -175,7 +175,7 @@ console.log(isLoading)    // false
   console.log(result) // undefined
   ``` 
 
-## 4. use asynchronous execution in `createStream().chain()`:
+## 4. Use asynchronous execution in `createStream().chain()`:
   - call `asAsync` method before `execute` method
   ```ts
   import { createStream, tap, map } from 'stream-executor'
@@ -190,7 +190,7 @@ console.log(isLoading)    // false
   console.log(result) // Record<string, any>
   ``` 
 
-## 5. abount the arguments of execute()
+## 5. Abount the arguments of execute()
   - set the arguments of execute method if you'd like to customize error handling, please
   ```ts
   let error: any
@@ -204,6 +204,8 @@ console.log(isLoading)    // false
       error = err
     })
   ```
+
+## 6. Replace `chain` or `batch` executor
 
 # Utils
 ## helper methods and those descriptions in createStream are
