@@ -117,7 +117,13 @@ export class StreamExecutorFacade<T> {
 
 /**
  * create streamer, initialValue is shallow copied.
- * Use `deepCopy` in this library if you'd like to do deep copy
+ *
+ *
+ * Use `deepCopy` in this library if you'd like to do deep copy.
+ *
+ *
+ * Set `option.chainClass` or `option.batchClass` if you would change execution process.
+ *   - https://github.com/nor-ko-hi-jp/stream-executor/blob/master/README.md#6-replace-chain-or-batch-executor
  * @param initialValue T
  * @param option: { chainClass?: { new (...args: any[]): BaseExecutor }, batchClass?: { new (...args: any[]): BaseExecutor } }
  */
