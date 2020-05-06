@@ -19,7 +19,7 @@ export class BatchExecutor<T> implements BaseExecutor {
     act8?: Action<T, H>,
     act9?: Action<T, I>,
     act10?: Action<T, J>
-  ) {
+  ): Omit<this, 'stream'> {
     const _actions = [
       act1,
       act2,

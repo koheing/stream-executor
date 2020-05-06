@@ -1,12 +1,23 @@
 import { Action, PromiseOr } from '../types'
 import { ChainExecutor } from './chain.executor'
 import { BatchExecutor } from './batch.executor'
+import { Constructor, BaseExecutor } from './__interfaces__'
 
 export class StreamExecutorFacade<T> {
   private _initialValue: T
+  private _chainClass: Constructor<BaseExecutor>
+  private _batchClass: Constructor<BaseExecutor>
 
-  constructor(initialValue: T) {
+  constructor(
+    initialValue: T,
+    option: {
+      chainClass?: Constructor<BaseExecutor>
+      batchClass?: Constructor<BaseExecutor>
+    }
+  ) {
     this._initialValue = initialValue
+    this._chainClass = option.chainClass ? option.chainClass : ChainExecutor
+    this._batchClass = option.batchClass ? option.batchClass : BatchExecutor
   }
 
   /**
@@ -37,7 +48,7 @@ export class StreamExecutorFacade<T> {
     act9?: Action<H, I>,
     act10?: Action<I, J>
   ) {
-    const executor = new ChainExecutor(this._initialValue).stream(
+    const executor = this._create('chain', this._initialValue).stream(
       act1 as Action<PromiseOr<any>, PromiseOr<any>>,
       act2 as Action<PromiseOr<any>, PromiseOr<any>>,
       act3 as Action<PromiseOr<any>, PromiseOr<any>>,
@@ -79,7 +90,7 @@ export class StreamExecutorFacade<T> {
     act9?: Action<T, I>,
     act10?: Action<T, J>
   ) {
-    const executor = new BatchExecutor(this._initialValue).stream(
+    const executor = this._create('batch', this._initialValue).stream(
       act1,
       act2,
       act3,
@@ -94,12 +105,32 @@ export class StreamExecutorFacade<T> {
 
     return executor as Pick<typeof executor, 'execute'>
   }
+
+  private _create(type: 'chain' | 'batch', ...args: any[]): BaseExecutor {
+    const instance =
+      type === 'chain'
+        ? new this._chainClass(...args)
+        : new this._batchClass(...args)
+    return instance
+  }
 }
 
 /**
  * create streamer, initialValue is shallow copied.
- * Use `deepCopy` in this library if you'd like to do deep copy
+ *
+ *
+ * Use `deepCopy` in this library if you'd like to do deep copy.
+ *
+ *
+ * Set `option.chainClass` or `option.batchClass` if you would change execution process.
+ *   - https://github.com/nor-ko-hi-jp/stream-executor/blob/master/README.md#6-replace-chain-or-batch-executor
  * @param initialValue T
+ * @param option: { chainClass?: { new (...args: any[]): BaseExecutor }, batchClass?: { new (...args: any[]): BaseExecutor } }
  */
-export const createStream = <T>(initialValue: T) =>
-  new StreamExecutorFacade(initialValue)
+export const createStream = <T>(
+  initialValue: T,
+  option: {
+    chainClass?: Constructor<BaseExecutor>
+    batchClass?: Constructor<BaseExecutor>
+  } = {}
+) => new StreamExecutorFacade(initialValue, option)

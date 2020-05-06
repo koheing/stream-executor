@@ -2,6 +2,7 @@ import { createStream, tap } from '../../src/executors'
 import { ChainExecutor } from '../../src/executors/chain.executor'
 import { BatchExecutor } from '../../src/executors/batch.executor'
 import { deepCopy } from '../../src/utils'
+import { BaseExecutor } from '../../src/executors/__interfaces__'
 
 describe('StreamExecutorFacade', () => {
   afterEach(() => {
@@ -59,5 +60,36 @@ describe('StreamExecutorFacade', () => {
 
     expect(input.value).toEqual(10)
     expect(input.fruitNames.length).toEqual(3)
+  })
+
+  it('replace Chain and Batch Executor', () => {
+    const spyConsole = jest.spyOn(console, 'log')
+    class MockChainExecutor implements BaseExecutor {
+      stream(...args: any[]) {
+        return this
+      }
+      execute() {
+        console.log('MockChainExecutor called')
+      }
+    }
+
+    class MockBatchExecutor implements BaseExecutor {
+      stream(...args: any[]) {
+        return this
+      }
+      execute() {
+        console.log('MockBatchExecutor called')
+      }
+    }
+    const facade = createStream(1, {
+      chainClass: MockChainExecutor,
+      batchClass: MockBatchExecutor,
+    })
+
+    facade.chain((it) => it).execute()
+    expect(spyConsole.mock.calls[0][0]).toEqual('MockChainExecutor called')
+
+    facade.batch((it) => it).execute()
+    expect(spyConsole.mock.calls[1][0]).toEqual('MockBatchExecutor called')
   })
 })

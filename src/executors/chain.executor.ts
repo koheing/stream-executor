@@ -21,7 +21,7 @@ export class ChainExecutor<T> implements BaseExecutor {
     act8?: Action<G, H>,
     act9?: Action<H, I>,
     act10?: Action<I, J>
-  ) {
+  ): Omit<this, 'stream'> {
     const _actions = [
       act1,
       act2,
@@ -41,7 +41,7 @@ export class ChainExecutor<T> implements BaseExecutor {
     return this as Omit<this, 'stream'>
   }
 
-  asAsync() {
+  asAsync(): Pick<this, 'execute'> {
     this._isPromiseContained = true
     return this as Pick<this, 'execute'>
   }
