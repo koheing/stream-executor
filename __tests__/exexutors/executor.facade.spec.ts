@@ -65,6 +65,7 @@ describe('StreamExecutorFacade', () => {
   it('replace Chain and Batch Executor', () => {
     const spyConsole = jest.spyOn(console, 'log')
     class MockChainExecutor implements BaseExecutor {
+      constructor(public initialValue: any) {}
       stream(...args: any[]) {
         return this
       }
@@ -74,6 +75,7 @@ describe('StreamExecutorFacade', () => {
     }
 
     class MockBatchExecutor implements BaseExecutor {
+      constructor(public initialValue: any) {}
       stream(...args: any[]) {
         return this
       }

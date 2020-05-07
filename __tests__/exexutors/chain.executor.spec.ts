@@ -101,4 +101,10 @@ describe('ChainExecutor', () => {
       .execute()
     expect(result).toBeUndefined()
   })
+
+  it('chain execute: initialValue is correct', () => {
+    const chain = new ChainExecutor(1)
+
+    expect(chain.initialValue).toEqual(1)
+  })
 })

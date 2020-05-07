@@ -1,11 +1,11 @@
 import { BatchExecutor } from '../../src/executors/batch.executor'
 
-describe('ParallelExecutor', () => {
+describe('BatchExecutor', () => {
   afterEach(() => {
     jest.clearAllMocks()
   })
 
-  it('parallel execute: succeeded', () => {
+  it('batch execute: succeeded', () => {
     const parallel = new BatchExecutor('apple')
     let favoriteFruit = ''
     const fruitNames: string[] = []
@@ -25,7 +25,7 @@ describe('ParallelExecutor', () => {
     expect(fruitNames[0]).toEqual('apple')
   })
 
-  it('parallel execute: failured, default errorHandling', () => {
+  it('batch execute: failured, default errorHandling', () => {
     const spyConsole = jest.spyOn(console, 'error')
     const parallel = new BatchExecutor('apple')
     let favoriteFruit = ''
@@ -48,7 +48,7 @@ describe('ParallelExecutor', () => {
     expect(spyConsole).toHaveBeenCalled()
   })
 
-  it('parallel execute: failured, custom errorHandling', () => {
+  it('batch execute: failured, custom errorHandling', () => {
     const parallel = new BatchExecutor('apple')
     let favoriteFruit = ''
     const fruitNames: string[] = []
@@ -69,5 +69,10 @@ describe('ParallelExecutor', () => {
 
     expect(favoriteFruit).toEqual('apple')
     expect(mockOnError).toHaveBeenCalled()
+  })
+
+  it('batch execute: initialValue is correct', () => {
+    const batch = new BatchExecutor('apple')
+    expect(batch.initialValue).toEqual('apple')
   })
 })
