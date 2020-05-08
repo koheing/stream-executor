@@ -10,6 +10,10 @@ export class ChainExecutor<T> implements BaseExecutor {
     this._initialValue = initialValue
   }
 
+  get initialValue(): T {
+    return this._initialValue
+  }
+
   stream<A, B, C, D, E, F, G, H, I, J>(
     act1: Action<T, A>,
     act2?: Action<A, B>,

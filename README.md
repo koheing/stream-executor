@@ -207,9 +207,11 @@ console.log(isLoading)    // false
 
 ## 6. Replace `chain` or `batch` executor
   - Set `option.chainClass` or `option.batchClass` if you would change execution process, please
+  - These Classes are initialized with initialValue as an argument
   ```ts
   import { BaseExecutor, createStream } from 'stream-executor'
   class MockChainExecutor implements BaseExecutor {
+    constructor(public initialValue: any) {}
     stream(...args: any[]) {
       return this
     }
@@ -219,6 +221,7 @@ console.log(isLoading)    // false
   }
 
   class MockBatchExecutor implements BaseExecutor {
+    constructor(public initialValue: any) {}
     stream(...args: any[]) {
       return this
     }
