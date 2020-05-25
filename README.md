@@ -127,6 +127,7 @@ console.log(isLoading)    // false
   const input = { value: 1 }
   const result = createStream(input)
     .chain(tap((it) => (it.value += 9)))
+    .execute()
 
   console.log(input) // { value: 10 }
   console.log(result) // { value: 10 }
@@ -134,6 +135,7 @@ console.log(isLoading)    // false
   const input2 = { value: 1 }
   const result2 = createStream(deepCopy(input2))
     .chain(tap((it) => (it.value += 9)))
+    .execute()
 
   console.log(input2) // { value: 1 }
   console.log(result2) // { value: 10 }
@@ -157,6 +159,7 @@ console.log(isLoading)    // false
   const input = new Wrapper(1)
   const result = createStream(deepCopy(input))
     .chain(tap((it) => (it.value += 9)))
+    .execute()
 
   console.log(input)  // Wrapper{ value: 1, doubledValue: 2, __proto__: { hello: () => console.log('world') } }
   console.log(result) // { value: 10, __proto__: {} }

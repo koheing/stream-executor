@@ -9,6 +9,10 @@ export const deepCopy = <T>(object: T): OmitFunction<T> => {
     return object as OmitFunction<T>
   }
 
+  if (object instanceof Date) {
+    return new Date(object) as any
+  }
+
   if (object instanceof Array) {
     return (object.map((it) => deepCopy(it)) as unknown) as OmitFunction<T>
   }

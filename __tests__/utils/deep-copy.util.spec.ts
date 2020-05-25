@@ -21,8 +21,8 @@ describe('deepCopy', () => {
       fruitPrices: [220, 150],
       description: {
         important: 'important',
-        warning: 'warning'
-      }
+        warning: 'warning',
+      },
     }
 
     const result = deepCopy(input)
@@ -39,5 +39,11 @@ describe('deepCopy', () => {
     expect(result.fruitNames.length).toEqual(3)
     expect(input.description.important).toEqual('important')
     expect(result.description.important).toEqual('warning')
+  })
+
+  it('return date', () => {
+    const now = new Date()
+    const value = deepCopy({ value: now })
+    expect(value.value.toString()).toEqual(now.toString())
   })
 })
