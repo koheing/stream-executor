@@ -44,6 +44,6 @@ describe('deepCopy', () => {
   it('return date', () => {
     const now = new Date()
     const value = deepCopy({ value: now })
-    expect(value.value.toString()).toEqual(now.toString())
+    expect(value.value.toLocaleTimeString()).toEqual(now.toLocaleTimeString())
   })
 })
