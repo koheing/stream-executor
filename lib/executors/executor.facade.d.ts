@@ -55,6 +55,6 @@ export declare class StreamExecutorFacade<T> {
  * @param option: { chainClass?: { new (...args: any[]): BaseExecutor }, batchClass?: { new (...args: any[]): BaseExecutor } }
  */
 export declare const createStream: <T>(initialValue: T, option?: {
-    chainClass?: Constructor<BaseExecutor> | undefined;
-    batchClass?: Constructor<BaseExecutor> | undefined;
+    chainClass?: Constructor<BaseExecutor>;
+    batchClass?: Constructor<BaseExecutor>;
 }) => StreamExecutorFacade<T>;
