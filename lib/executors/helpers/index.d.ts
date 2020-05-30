@@ -76,7 +76,7 @@ export declare const ifRight: <T>(predicate: (data: T) => boolean, right: (data:
  *      ..
  *    )
  */
-export declare const asTypeOf: <T>(type: "string" | "number" | "bigint" | "boolean" | "symbol" | "undefined" | "object" | "function") => <U>(data: U) => T;
+export declare const asTypeOf: <T>(type: 'string' | 'number' | 'boolean' | 'object' | 'function' | 'symbol' | 'undefined' | 'bigint') => <U>(data: U) => T;
 /**
  * filter if true :`data instanceof instance`
  * @param type
