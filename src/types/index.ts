@@ -4,7 +4,7 @@ type PickKeysByType<T, V> = {
 
 type ArrayOr<T, U> = T extends Array<any> ? T : U
 type OrMapObject<T, U> = T extends Record<string, unknown> ? U : T
-type PickFunctionKeys<T> = PickKeysByType<T, Function>
+type PickFunctionKeys<T> = PickKeysByType<T, (...args: any[]) => void>
 
 export type PromiseOr<T> = T extends Promise<T> ? Promise<T> : T
 
