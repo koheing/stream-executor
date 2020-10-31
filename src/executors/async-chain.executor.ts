@@ -1,7 +1,7 @@
 import { BaseExecutor } from './__interfaces__'
 import { Action, PromiseOr } from '../types'
 
-export class ChainExecutor<T> implements BaseExecutor {
+export class AsyncChainExecutor<T> implements BaseExecutor {
   private _initialValue: T
   private _actions: Action<PromiseOr<any>, PromiseOr<any>>[] = []
 
@@ -14,7 +14,7 @@ export class ChainExecutor<T> implements BaseExecutor {
   }
 
   stream<A, B, C, D, E, F, G, H, I, J>(
-    act1: Action<T, A>,
+    act1: Action<Promise<T>, A>,
     act2?: Action<A, B>,
     act3?: Action<B, C>,
     act4?: Action<C, D>,
@@ -44,10 +44,10 @@ export class ChainExecutor<T> implements BaseExecutor {
     return this as Omit<this, 'stream'>
   }
 
-  execute<T = any>(onError?: (error: any) => any): T {
-    let result: any = this._initialValue
+  async execute<T = any>(onError?: (error: any) => any): Promise<T> {
+    let result: PromiseOr<any> = this._initialValue
     try {
-      result = this._execute()
+      result = await this._promiseExecute()
     } catch (e) {
       if (onError) {
         onError(e)
@@ -59,16 +59,21 @@ export class ChainExecutor<T> implements BaseExecutor {
     return result
   }
 
-  private _execute(): any {
+  private async _promiseExecute(): Promise<any> {
     let result = this._initialValue
-    this._actions.reduce((pre, curr) => {
-      if (typeof pre === 'undefined') {
-        return
-      }
-      const _result = curr(pre)
-      result = _result
-      return _result
-    }, this._initialValue)
+    await this._actions.reduce(
+      async (pre, curr: Action<PromiseOr<any>, PromiseOr<any>>) => {
+        if (pre instanceof Promise && typeof (await pre) === 'undefined') {
+          return
+        }
+
+        const _result = await curr(pre)
+        result = _result
+        return _result
+      },
+      Promise.resolve(this._initialValue)
+    )
+
     return result
   }
 }

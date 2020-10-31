@@ -118,6 +118,31 @@ console.log('end')
 console.log(isLoading)    // false
 ```
 
+# 3. asyncChain stream
+
+###  using stream-executor
+```ts
+import { createStream, tap, map } from 'stream-executor'
+const result = await createStream(1)
+  .asyncChain(
+    tap(async (it) => console.log(await it)),             // 1
+    map(async (it) => await callAPI(it)),    
+    map(async (it) => parseToModel(await it))      // Record<string, any>
+  )
+  .execute()
+console.log(result) // Record<string, any>
+``` 
+### not using stream-executor 
+```ts
+(async () => {
+  let result
+  const value = 1
+  result = await callAPI(value)
+  result = await parseToModel(result)
+  console.log(result)
+})()
+```
+
 
 # Important
 ## 1. About `createStream`
@@ -178,22 +203,7 @@ console.log(isLoading)    // false
   console.log(result) // undefined
   ``` 
 
-## 4. Use asynchronous execution in `createStream().chain()`:
-  - Call `asAsync` method before `execute` method
-  ```ts
-  import { createStream, tap, map } from 'stream-executor'
-  const result = await createStream(1)
-    .chain(
-      tap((it) => console.log(it)),             // 1
-      map(async (it) => await callAPI(it)),    
-      map(async (it) => parseToModel(await it)) // Record<string, any>
-    )
-    .asAsync()
-    .execute()
-  console.log(result) // Record<string, any>
-  ``` 
-
-## 5. Abount the arguments of execute()
+## 4. Abount the arguments of execute()
   - Set the arguments of execute method if you'd like to customize error handling, please
   ```ts
   let error: any
@@ -208,7 +218,7 @@ console.log(isLoading)    // false
     })
   ```
 
-## 6. Replace `chain` or `batch` executor
+## 5. Replace `chain` or `batch` executor
   - Set `option.chainClass` or `option.batchClass` if you would change execution process, please
   - These Classes are initialized with initialValue as an argument
   ```ts
