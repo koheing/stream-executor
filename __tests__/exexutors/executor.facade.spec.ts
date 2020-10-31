@@ -3,6 +3,7 @@ import { ChainExecutor } from '../../src/executors/chain.executor'
 import { BatchExecutor } from '../../src/executors/batch.executor'
 import { deepCopy } from '../../src/utils'
 import { BaseExecutor } from '../../src/executors/__interfaces__'
+import { AsyncChainExecutor } from '../../src/executors/async-chain.executor'
 
 describe('StreamExecutorFacade', () => {
   afterEach(() => {
@@ -17,7 +18,16 @@ describe('StreamExecutorFacade', () => {
     expect(executor).toBeInstanceOf(ChainExecutor)
   })
 
-  it('ParallelExecutor called', () => {
+  it('AsyncChainExecutor called', async () => {
+    const executor = createStream(1)
+      .asyncChain((it) => Promise.resolve(10))
+    const result = await executor.execute()
+
+    expect(result).toEqual(10)
+    expect(executor).toBeInstanceOf(AsyncChainExecutor)
+  })
+
+  it('BatchExecutor called', () => {
     let num = 0
     const executor = createStream(1).batch((it) => {
       num = it

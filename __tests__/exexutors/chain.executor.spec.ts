@@ -74,34 +74,6 @@ describe('ChainExecutor', () => {
     expect(mockOnError).toHaveBeenCalled()
   })
 
-  it('chain execute: promise execute', async () => {
-    const chain = new ChainExecutor({ value: 1 })
-    const result = await chain
-      .stream(
-        (it) => {
-          it.value += 10
-          return Promise.resolve(it.value.toString())
-        },
-        async (it) => {
-          const value = await it
-          const isString = typeof value === 'string' ? true : false
-          return Promise.resolve(isString)
-        },
-        async (it) => {
-          const value = await it
-          return !value ? 'end' : undefined
-        },
-        async (it) => {
-          const value = await it
-          const isString = typeof value === 'string' ? true : false
-          return Promise.resolve(isString)
-        }
-      )
-      .asAsync()
-      .execute()
-    expect(result).toBeUndefined()
-  })
-
   it('chain execute: initialValue is correct', () => {
     const chain = new ChainExecutor(1)
 
